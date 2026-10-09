@@ -1,75 +1,89 @@
-# 墨间 · 暖纸书房
+# Mojian · Warm Paper
 
-一款在 Windows 本机运行的中文网络小说创作网站。米白纸面、墨绿点缀、宋体正文。无需安装 npm 依赖。
+A local novel writing studio with a warm ivory canvas, forest-green accents, and bookish typography. Runs on Windows with Node.js 22 or newer and no npm dependencies.
 
-## 启动
+## Quick start
 
-双击 **start.cmd**，自动打开 http://127.0.0.1:3210 。需要 Node.js 22 或更新版本；启动脚本也会寻找本机 Codex 附带的 Node。
+Double-click **start.cmd** to open http://127.0.0.1:3210. The launcher finds Node.js on your PATH or in the local Codex runtime.
 
-也可以在项目目录运行：
+Alternatively:
 
 ```powershell
 node server.mjs
 ```
 
-使用 Windows 环境变量 OPENAI_API_KEY；请勿把密钥写入代码、README 或 Git。设置后重新启动服务。可选变量 OPENAI_TEXT_MODEL（默认 gpt-4.1）、OPENAI_IMAGE_MODEL（默认 gpt-image-2）、PORT（默认 3210）。模型可用性取决于账户权限。
+Set **OPENAI_API_KEY** as a Windows environment variable to enable AI features. Never put the key in source files or Git. Restart the server after changing environment variables.
 
-启动器后台运行服务。如需停止，可在任务管理器中结束对应的 node.exe；手动启动时按 Ctrl+C。不要在尚未保存时结束进程。
+Optional configuration:
 
-## 功能
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| OPENAI_TEXT_MODEL | gpt-4.1 | Writing model |
+| OPENAI_IMAGE_MODEL | gpt-image-2 | Image model |
+| PORT | 3210 | Local server port |
 
-- 多作品、多章节，章节和作品重命名。
-- 正文、大纲、人物设定、世界观；字数统计、字体和字号、专注模式。
-- 自动保存到磁盘、保存失败提示、多窗口版本冲突保护。
-- 选段续写、润色、扩写、大纲生成；草稿先保存在本地，作者决定是否追加到正文。
-- 选段生成水墨、电影感或插画配图，本地图库。
-- TXT 导出到项目内；最近 50 次保存备份。
-- 无云同步、无遥测、无外部字体、无浏览器持久化小说缓存。
+Model access depends on your API account. The launcher runs the server in the background. To stop it, end the corresponding node.exe process in Task Manager; for a manually started server, press Ctrl+C. Wait for **Saved locally** before stopping the server.
 
-## 数据在哪里
+## Features
 
-所有创作数据位于项目内的 **local-data/**：
+- Multiple books and chapters, with editable titles.
+- Manuscript, outline, character notes, and worldbuilding.
+- Local autosave, save-error feedback, and version conflict protection across windows.
+- Character count, reading-time estimate, font controls, and focus mode.
+- AI continuation, polishing, expansion, and outlines from explicitly selected content.
+- Ink-wash, cinematic, and storybook illustrations with a local gallery.
+- Local AI draft history, TXT exports, and the last 50 save snapshots.
+- English interface and documentation; manuscripts can be written in any language.
 
-| 路径 | 内容 |
+## Local data
+
+All creative content stays in the project folder under **local-data/**:
+
+| Path | Contents |
 | --- | --- |
-| library.json | 全部作品、章节与设定 |
-| backups/ | 最近 50 次保存前的资料快照 |
-| drafts/ | AI 生成草稿 |
-| images/ | 配图及其元数据 |
-| exports/ | 导出的 TXT |
-| server.log / server-error.log | 本地服务启动日志，不记录正文或密钥 |
+| library.json | Books, chapters, and story notes |
+| backups/ | Last 50 snapshots taken before saving |
+| drafts/ | Generated AI drafts |
+| images/ | Generated images and metadata |
+| exports/ | TXT exports |
+| server.log / server-error.log | Startup logs, without manuscripts or API keys |
 
-备份恢复：先关闭服务，将当前 library.json 另存留档，再把需要的 backups 文件复制为 library.json，重新启动。资料损坏时服务会停止，不会用空数据覆盖。备份与原文在同一磁盘，不防磁盘损坏；如需额外备份，请复制到你控制的本地设备。
+To restore a snapshot, stop the server, preserve the current library.json, copy a chosen backup to library.json, then restart. The server refuses to overwrite a corrupt library. These backups are on the same disk, so they do not protect against disk failure. Use a local device you control for additional backups.
 
-## AI 与隐私边界
+## AI and privacy
 
-只有点击生成并在预览窗口确认后，才调用 OpenAI。请求仅含窗口展示的参考片段、要求和固定的创作助手指令，**不会自动发送整章、整书或其他设定**。文字接口设置 store: false。API Key 只在本机服务端读取，不传给浏览器。
+An AI request is sent only after you click Generate and confirm its preview. It contains the displayed excerpt and instructions plus the fixed writing or illustration instructions. Other chapters and story notes are not attached automatically.
 
-“本地保存”并不表示 AI 请求不经过云端。OpenAI 将处理你确认的输入，相关保留规则由账户与 API 数据政策决定。API 调用会产生费用。没有 Key 或无法联网时仍可正常本地写作。
+Text requests use **store: false**. The API key is read by the local server and never sent to the browser. AI output follows your requested language, otherwise the excerpt language, with English as the fallback.
 
-接口参考：[文字生成](https://developers.openai.com/api/docs/guides/text)、[Responses 存储设置](https://developers.openai.com/api/docs/guides/migrate-to-responses)、[图片生成](https://developers.openai.com/api/reference/resources/images/methods/generate)。
+Local storage does not mean AI processing happens offline. OpenAI processes the content you confirm under its API data policies, and usage charges apply. Writing and local saving work without a key or internet access.
 
-## GitHub 内容隔离
+References: [Text generation](https://developers.openai.com/api/docs/guides/text), [Responses storage](https://developers.openai.com/api/docs/guides/migrate-to-responses), [Image generation](https://developers.openai.com/api/reference/resources/images/methods/generate).
 
-.gitignore 默认忽略所有内容，仅逐项放行程序源码。local-data、密钥、日志、图片和导出均不被收录。
-本地 Git hooks 在提交与推送前检查源码白名单和常见 Key 格式，推送时也检查现有历史。它们是防误操作措施，不能阻止刻意绕过 hooks 或把正文手工粘贴到源码中。
+## Public source, private manuscripts
 
-首次克隆后启用：
+The public GitHub repository contains application source only. The website runs on your computer; it does not need cloud hosting.
+
+.gitignore excludes everything by default and explicitly allows reviewed source files. Manuscripts, images, drafts, exports, backups, logs, and secrets are excluded. Git hooks check the source allowlist and common API-key patterns before commits and pushes, including tracked history before a push.
+
+Enable hooks after cloning:
 
 ```powershell
 git config core.hooksPath .githooks
 node scripts/check-repository.mjs
 ```
 
-不要强制添加本地资料，不要对 local-data 启用第三方云同步。GitHub 只托管源码；网站无需部署到云端。
+These checks prevent accidental inclusion; they cannot prevent deliberately bypassing hooks or pasting private content into an allowed source file. Do not force-add local data or enable third-party cloud synchronization for it.
 
-## 开发与验证
+## Development and checks
 
-纯 Node.js HTTP 服务与原生 HTML / CSS / JavaScript，无运行时第三方依赖。服务仅监听 127.0.0.1，检查 Host / Origin / Fetch Metadata，写操作要求每次启动生成的令牌；静态文件显式白名单，正文不记录到日志。
+Plain Node.js HTTP server and native HTML, CSS, and JavaScript. No runtime dependencies, telemetry, remote fonts, or persistent browser storage of manuscripts.
+
+The server listens only on 127.0.0.1. It checks Host, Origin, and Fetch Metadata, requires a per-session token for writes, and serves only explicitly allowed static files.
 
 ```powershell
 node --test tests/server.test.mjs
 node scripts/check-repository.mjs --history
 ```
 
-测试使用模拟 AI 返回值，不调用付费 API。覆盖保存与恢复、版本冲突、损坏保护、外站访问阻止、显式发送确认、选段范围和本地配图/草稿/导出。
+Tests mock AI responses without paid API calls. They cover save/reload, revision conflicts, corrupt-data protection, external-origin rejection, explicit AI confirmation, selected-content isolation, and local drafts, images, and exports.

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "墨间 · 暖纸书房，本地小说创作工作室",
+  "description": "Mojian · Warm Paper, a local novel writing studio",
   "engines": {
     "node": ">=22"
   },

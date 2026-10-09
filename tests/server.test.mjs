@@ -57,6 +57,6 @@ test('local storage, conflict protection, private boundaries and explicit AI req
 test('corrupt library is never silently overwritten',async()=>{
   const base=path.join(ROOT,'local-data');await fs.mkdir(base,{recursive:true});const dir=await fs.mkdtemp(path.join(base,'test-'));
   await fs.writeFile(path.join(dir,'library.json'),'{broken');
-  try{await assert.rejects(createApp({dataDir:dir}),/不会覆盖/);assert.equal(await fs.readFile(path.join(dir,'library.json'),'utf8'),'{broken');}
+  try{await assert.rejects(createApp({dataDir:dir}),/will not be overwritten/);assert.equal(await fs.readFile(path.join(dir,'library.json'),'utf8'),'{broken');}
   finally{if(path.resolve(dir).startsWith(path.resolve(base)+path.sep)&&path.basename(dir).startsWith('test-'))await fs.rm(dir,{recursive:true,force:true});}
 });
