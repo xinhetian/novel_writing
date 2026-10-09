@@ -13,6 +13,7 @@ if(process.argv.includes('--history')){
   for(const line of history){
     const split=line.indexOf(' ');if(split<0)continue;
     const hash=line.slice(0,split),name=line.slice(split+1);
+    if(!name)continue;
     if(['public','scripts','tests','.githooks'].includes(name))continue;
     if(!allowed.has(name)){bad.push(name+' (history)');continue;}
     if(/\bsk-[A-Za-z0-9_-]{24,}/.test(git('cat-file','-p',hash)))bad.push(name+' (possible key in history)');
