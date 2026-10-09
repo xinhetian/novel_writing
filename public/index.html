@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>墨间 · 暖纸书房</title><link rel="stylesheet" href="/style.css"><script defer src="/app.js"></script></head>
+<body>
+<header class="topbar"><a class="brand" href="/" aria-label="墨间首页"><span class="seal">墨</span><strong>墨间</strong><span class="brand-divider"></span><span class="tagline">本地小说工作室</span></a><div class="header-right"><span class="local"><i></i> 本地保存</span><button id="settingsButton" class="icon-button" title="设置与存储说明" aria-label="设置">⚙</button></div></header>
+<div class="workspace">
+<aside class="sidebar">
+<div class="eyebrow">你的故事，从这里开始</div>
+<nav id="nav" aria-label="工作区导航">
+<button data-view="editor" class="nav-button active"><span>▤</span>我的作品</button>
+<button data-view="outline" class="nav-button"><span>☷</span>章节大纲</button>
+<button data-view="characters" class="nav-button"><span>♙</span>人物设定</button>
+<button data-view="world" class="nav-button"><span>◎</span>世界观</button>
+<button data-view="gallery" class="nav-button"><span>▧</span>灵感图库</button>
+</nav>
+<div class="sidebar-section"><div class="section-label">当前作品<button id="newBook" class="icon-button" title="新建作品" aria-label="新建作品">＋</button></div><select id="bookSelect" aria-label="选择作品"></select><button id="renameBook" class="text-button small">重命名作品</button></div>
+<div class="chapter-section"><div class="section-label">章节目录<button id="newChapter" class="icon-button" title="新建章节" aria-label="新建章节">＋</button></div><div id="chapters"></div></div>
+<div class="sidebar-bottom"><div class="botanical">❧</div><p>一字一句，皆成世界。</p><span>暖纸书房 · LOCAL FIRST</span></div>
+</aside>
+<main class="main">
+<div class="breadcrumb"><span id="bookBreadcrumb">我的书房</span><span>/</span><span id="viewBreadcrumb">正文创作</span><button id="exportBook" class="text-button">导出 TXT ↗</button></div>
+<section id="writingView" class="writing-view">
+<div class="editor-heading"><div><div class="eyebrow" id="editorEyebrow">MANUSCRIPT / 正文</div><input id="chapterTitle" class="chapter-title" maxlength="200" aria-label="章节标题" placeholder="第一章"></div><button id="focusButton" class="quiet-button">⛶ 专注模式</button></div>
+<div class="toolbar"><div><span>正文</span><span class="separator"></span><select id="fontSelect" aria-label="正文字体"><option value="serif">宋体 · 书卷</option><option value="sans">黑体 · 清晰</option></select><select id="fontSize" aria-label="正文字号"><option value="18">18</option><option value="20" selected>20</option><option value="24">24</option></select></div><button id="useSelection" class="text-button">✦ 使用选中片段</button></div>
+<textarea id="editor" spellcheck="false" placeholder="在这里写下你的故事。&#10;&#10;不用急着找到完美的开头，先让第一个念头落在纸上。" aria-label="正文编辑器"></textarea>
+<footer class="editor-footer"><button id="saveButton" class="save-status">✓ <span id="saveStatus">正在读取本地作品…</span></button><span><span id="wordCount">0</span> 字 <span class="separator"></span> <span id="readingTime">约 0 分钟阅读</span></span></footer>
+</section>
+<section id="galleryView" class="gallery-view" hidden><div class="eyebrow">VISUAL NOTES / 灵感图库</div><h1>故事，有了模样。</h1><p class="muted">从文字里生长的画面，都留在你的本地书房。</p><div id="galleryGrid" class="gallery-grid"></div></section>
+<div id="emptyView" class="empty-view" hidden><div class="empty-mark">墨</div><div class="eyebrow">A QUIET PLACE FOR YOUR STORIES</div><h1>给故事，一页开始。</h1><p>人物、山河，和那些尚未说出口的话。<br>在这里，慢慢写成你的世界。</p><button id="firstBook" class="primary">＋ 创建第一部作品</button><div class="empty-note">本地自动保存 · 选段 AI 创作 · 灵感配图</div></div>
+</main>
+<aside class="assistant">
+<div class="assistant-tabs" role="tablist"><button id="textTab" class="active" role="tab" aria-selected="true">写作助手</button><button id="imageTab" role="tab" aria-selected="false">片段配图</button></div>
+<div class="assistant-content">
+<div class="assistant-intro"><span class="spark">✦</span><h2 id="assistantTitle">陪你，把故事写下去。</h2><p id="assistantDescription">一个灵感，一段续写。创作的方向始终在你手中。</p></div>
+<label class="field-label" for="excerpt">参考片段 <span id="excerptCount">0 字</span></label><textarea id="excerpt" class="excerpt" maxlength="12000" placeholder="在正文中选中一段文字，点击「使用选中片段」。也可以在这里直接输入。"></textarea>
+<div id="textOptions"><div class="field-label">创作方式</div><div class="chips" id="modes"><button class="chip active" data-mode="续写">续写</button><button class="chip" data-mode="润色">润色</button><button class="chip" data-mode="扩写">扩写</button><button class="chip" data-mode="大纲">大纲</button></div></div>
+<div id="imageOptions" hidden><div class="field-label">画面风格</div><div class="chips" id="styles"><button class="chip active" data-style="东方水墨，留白，淡雅">水墨</button><button class="chip" data-style="电影感，写实，细腻光影">电影感</button><button class="chip" data-style="精致绘本插画，柔和配色">插画</button></div></div>
+<label class="field-label" for="prompt">补充要求 <span>可选</span></label><textarea id="prompt" class="prompt" maxlength="3500" placeholder="例如：放慢节奏，多一些环境描写，约 500 字。"></textarea>
+<button id="generate" class="primary full">✦ 开始创作</button>
+<p class="privacy-note">⌁ 点击后预览发送内容。仅将确认的片段与要求发送给 OpenAI，按 API 用量计费。</p>
+<div class="result-heading"><span>灵感回音</span><button id="historyButton" class="text-button small">历史草稿</button></div>
+<div id="resultEmpty" class="result-empty"><span>❧</span><p>留一点空白，等灵感到来。</p></div>
+<div id="textResult" hidden><textarea id="draft" aria-label="AI 生成草稿" placeholder="生成结果"></textarea><button id="insertDraft" class="outline-button full">＋ 追加到当前章节</button><p class="muted small">生成草稿已自动保存到本地，可在历史草稿找回。</p></div>
+<div id="imageResult" hidden><a id="imageLink" target="_blank" rel="noreferrer"><img id="generatedImage" alt="小说片段生成的配图"></a><p class="muted small">✓ 已保存到本地图库 · 点击查看原图</p></div>
+</div>
+<div class="assistant-bottom"><span id="keyStatus">检查 API 配置…</span><span>私人的创作空间</span></div>
+</aside>
+</div>
+<div id="toast" class="toast" role="status" hidden></div>
+<dialog id="nameDialog"><form method="dialog"><div class="eyebrow">YOUR NEXT STORY</div><h2 id="nameDialogTitle">为作品起个名字</h2><input id="nameInput" maxlength="200" required autocomplete="off"><div class="dialog-actions"><button value="cancel" class="quiet-button" formnovalidate>取消</button><button value="ok" class="primary">确定</button></div></form></dialog>
+<dialog id="confirmDialog"><div class="eyebrow">YOU ARE IN CONTROL</div><h2>确认这一次创作</h2><p class="muted">以下内容将发送给 OpenAI。不会附带其他章节、人物设定或整部作品。</p><pre id="sendPreview"></pre><p class="muted small">请求会产生 API 费用。小说和生成结果保存在本地；OpenAI 对请求的处理遵循其 API 数据政策。</p><div class="dialog-actions"><button id="cancelGenerate" class="quiet-button">再改一下</button><button id="confirmGenerate" class="primary">确认发送并生成</button></div></dialog>
+<dialog id="settingsDialog"><div class="eyebrow">YOUR PRIVATE STUDY</div><h2>书房设置</h2><p class="field-label">本地保存位置</p><code id="dataPath"></code><p class="muted">作品、图片、AI 草稿、TXT 导出与最近 50 次保存备份都在此目录。关闭网页前，请确认左下角显示「已保存到本地」。</p><p class="field-label">AI 模型</p><p id="modelInfo" class="muted"></p><p class="muted small">API Key 只由本机服务读取。可使用环境变量 OPENAI_TEXT_MODEL / OPENAI_IMAGE_MODEL 更改模型，然后重启服务。</p><p class="field-label">内容隔离</p><p class="muted">无云同步、无访问统计、无外部字体。Git 仅收录程序源码；本地资料不进入仓库。</p><div class="dialog-actions"><button id="closeSettings" class="primary">知道了</button></div></dialog>
+<dialog id="historyDialog"><h2>本地历史草稿</h2><p class="muted">点击草稿，载入右侧编辑区。</p><div id="draftList"></div><div class="dialog-actions"><button id="closeHistory" class="primary">关闭</button></div></dialog>
+</body></html>

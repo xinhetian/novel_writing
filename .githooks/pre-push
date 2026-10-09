@@ -1,0 +1,5 @@
+#!/bin/sh
+if command -v node >/dev/null 2>&1; then
+  exec node scripts/check-repository.mjs --history
+fi
+exec "$USERPROFILE/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe" scripts/check-repository.mjs --history
